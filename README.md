@@ -15,8 +15,8 @@ At the moment it's pretty raw. The best thing to do is open up ghci and type
 
 Then you can enter expressions like:
 
-   ghci> eval (List [List [Sym "lambda", List [Sym "x"], List [Sym "if", Sym "x", Num 1, Num 3]], Num 3]) initialEnv
-   Num 1
-   ghci>
+    ghci> eval (List [List [Sym "lambda", List [Sym "x"], List [Sym "if", Sym "x", Num 1, Num 3]], Num 3]) initialEnv
+    Num 1
+    ghci>
    
 
