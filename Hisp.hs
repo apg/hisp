@@ -1,4 +1,5 @@
 import qualified Data.Map as Map
+import Text.ParserCombinators.Parsec
 
 data Val = Num Int
          | Sym String
@@ -94,3 +95,25 @@ initialEnv = [Map.fromList [ ("cons", Prim "cons")
                            , ("/", Prim "/")
                            , ("=", Prim "=")
                            ]]
+
+p_value = p_num
+      <|> p_sym
+      <|> p_list
+      <|> p_quoted
+p_num = do d <- (many1 digit)
+           return (Num (read d :: Int))
+s_initial = oneOf "+-*/.%^|=><" <|> letter
+s_subsequent = s_initial <|> letter <|> digit <|> oneOf "!?"
+p_sym = do s <- s_initial
+           se <- many s_subsequent
+           return (Sym (s : se))
+p_list = do es <- between (char '(') (char ')') p_list_elts
+            return (List es)
+p_quoted = do v <- char '\'' >> p_value
+              return (List [Sym "quote", v])
+p_list_elts = sepBy p_value spaces
+
+readVal :: String -> Val
+readVal input = case parse p_value "(read error)" input of
+                   Right val -> val
+                   Left x -> error $ "uh oh, couldn't parse that:\n" ++ (show x)

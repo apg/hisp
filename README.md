@@ -6,7 +6,7 @@ all--go figure! I should really get back to that at some point...
 
 ## Todo
 
-* Play with Parsec and get a parser for this thing working.
+* Build a repl
 
 ## How to use
 
@@ -19,4 +19,8 @@ Then you can enter expressions like:
     Num 1
     ghci>
    
+Or, since there is now a reader, you can enter expressions like:
 
+    ghci> eval (readVal "((lambda (x) (+ 1 x)) 41)") initialEnv
+    Num 42
+    ghci>
